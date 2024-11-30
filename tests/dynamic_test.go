@@ -59,7 +59,8 @@ func TestDynamicModule(t *testing.T) {
 	}
 
 	defer terraform.Destroy(t, terraformOptions)
-	terraform.InitAndApply(t, terraformOptions)
+	//terraform.InitAndApply(t, terraformOptions)
+	terraform.InitAndApplyAndIdempotent(t, terraformOptions)
 
 	// Validate outputs
 	for outputName := range outputs {
