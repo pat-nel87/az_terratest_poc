@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"terraform_testing_poc/tests/utils"
 	"testing"
@@ -11,8 +12,13 @@ import (
 )
 
 func TestDynamicModule(t *testing.T) {
-	modulePath := "../modules/az_rg"
-	utils.AddProviderFile(t, "../modules/az_rg")
+	//modulePath := "../modules/az_rg"
+	modulePath := os.Getenv("MODULE_PATH")
+	if modulePath == "" {
+		t.Fatalf("MODULE_PATH environment variable is not set")
+	}
+
+	utils.AddProviderFile(t, modulePath)
 	// Parse variables
 	optionalVars, requiredVars, err := utils.ParseVariables(modulePath)
 	if err != nil {
@@ -68,3 +74,4 @@ func TestDynamicModule(t *testing.T) {
 		assert.NotEmpty(t, actualValue, "Output "+outputName+" should not be empty")
 	}
 }
+
